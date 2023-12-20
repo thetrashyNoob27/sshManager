@@ -12,6 +12,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/libsqlite3/)
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -20,8 +23,6 @@ set(PROJECT_SOURCES
         hosttreemodel.h hosttreemodel.cpp
         hosttreeitem.h hosttreeitem.cpp
         sshhostdatabase.h sshhostdatabase.cpp
-        sqlite3.c sqlite3.h
-
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -56,6 +57,8 @@ set_target_properties(sshManager PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+target_link_libraries(sshManager PRIVATE ${PROJECT_SOURCE_DIR}/libsqlite3/libsqlite3.a)
 
 install(TARGETS sshManager
     BUNDLE DESTINATION .
